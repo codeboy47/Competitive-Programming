@@ -1,0 +1,12 @@
+A string array is an array of strings , that is it stores address of a string at every index value , but a character array is an array of characters and hence will store a character at every index value .
+For example :
+You can store the names of five different people at five different array index locations in a string array of size 5 , but in a character array you will be able to store 5 characters at 5 different array index values.
+
+a string array is a collection of strings.
+a char array is a collection of characters.
+eg.String str[]={"friend","life"};
+String str1[]={"i","am","f"};
+are correct declarations.
+char ch[]={'f','i','r','e'}; is also correct.
+but char ch[]={'friend'}; or
+char char ch[]={"friend"}; are wrong declarations.

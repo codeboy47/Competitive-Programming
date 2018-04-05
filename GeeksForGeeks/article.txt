@@ -1,0 +1,146 @@
+<!-- Problem Statement -->
+
+
+Given an array of numbers and a number k, find the number of subarrays having sum less than k. We may assume that there is no overflow.
+
+Examples:
+<pre>
+Input : arr[] = [1, 2, 3]
+        K = 4
+Output : 4
+The subarrays are {1}, {2}, {3}, {1, 2}
+
+Input : arr[] = [3, 2, 1, 3, 2, 10, 5]
+        K = 10
+Output : 15
+</pre>
+
+
+
+<a href="https://ide.geeksforgeeks.org/" rel="noopener" target="_blank">Recommended: Please try your approach on {IDE} first, before moving on to the solution</a>.
+
+
+
+A <strong>simple solution</strong> is to generate all subarrays of the array and then count the number of arrays having sum less than K.
+Below is the implementation of above approach :
+
+[sourcecode language="CPP" highlight=""]
+// CPP program to count subarrays having
+// sum less than k.
+#include <bits/stdc++.h>
+using namespace std;
+
+/// Function to find number of subarrays having
+/// sum less than k.
+int countSubarray(int arr[], int n, int k)
+{
+    int count = 0;
+
+    for(int i = 0; i < n; i++)
+    {
+        int sum = 0;
+        for(int j = i; j < n; j++)
+        {
+            // If sum is less than k then update sum
+            // and increment count
+            if(sum + arr[j] < k)
+            {
+                 sum = arr[j] + sum;
+                 count++;
+            }
+            else
+            {
+                 break;
+            }
+        }
+    }
+
+    return count;
+}
+
+// Driver Code
+int main()
+{
+    int array[] = {3, 2, 1, 3, 2, 10, 5};
+    int k = 10;
+    int size = sizeof(array) / sizeof(array[0]);
+    int count = countSubarray(array, size, k);
+    cout << count << "\n";
+}
+[/sourcecode]
+
+Output :
+<pre>
+15
+</pre>
+
+Time complexity: O(n^2).
+
+
+An <strong>efficient solution</strong> is based on sliding window technique that can be used to solve the problem. We use two pointers start and end to represent starting and ending point of sliding window. (Not that we need to find contiguous parts).
+
+Initially both start and end point to the beginning of the array, i.e. index 0. Now, let's try to add a new element el. There are two possible conditions.
+
+1st case :
+If sum is less than k, increment end by one position. So contiguous arrays this step produce are (end - start). We also add el to previous sum. There are as many such arrays as the length of the window.
+
+2nd case :
+If sum becomes greater than or equal to k, this means we need to subtract starting element from sum so that the sum again becomes less than k. So we adjust the window’s left border by incrementing start.
+
+We follow the same procedure until end &lt; array size.
+
+<strong>Implementation: </strong>
+
+[sourcecode language="CPP" highlight=""]
+// CPP program to count subarrays having
+// sum less than k.
+#include <bits/stdc++.h>
+using namespace std;
+
+/// Function to find number of subarrays having
+/// sum less than k.
+int countSubarrayBySlidingWindow(int arr[], int n, int k)
+{
+    int start = 0, end = 0, count = 0, sum = arr[0];
+
+    while(end < n)
+    {
+        // If sum is less than k, move end by one position.
+        // Update count and sum accordingly.
+        if(sum < k)
+        {
+            end++;
+            count += end - start;
+            sum += arr[end];
+        }
+
+        // If sum is greater than or equal to k, subtract
+        // arr[start] from sum and decrease
+        // sliding window by moving start by one position
+        else
+        {
+            sum -= arr[start];
+            start++;
+        }
+    }
+
+    return count;
+}
+
+// Driver Code
+int main()
+{
+    int array[] = {3, 2, 1, 3, 2, 10, 5};
+    int k = 10;
+    int size = sizeof(array) / sizeof(array[0]);
+    int count = countSubarrayBySlidingWindow(array, size, k);
+    cout << count << "\n";
+}
+[/sourcecode]
+
+Output :
+<pre>
+15
+</pre>
+
+Time complexity: O(n).
